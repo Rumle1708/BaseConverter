@@ -1,6 +1,8 @@
 # Generic makefile for small C-projects
 # Run make dirs to setup project
 
+SHELL := /bin/bash
+
 # Compiler stuff
 CC = gcc
 CFLAGS = -g -Wall
@@ -23,34 +25,40 @@ PRGNAME = main
 .PHONY: all
 all: $(BINDIR)/$(PRGNAME)
 
+# Compile to object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.c dirs
+	@echo "Creating object files"
+	$(CC) $(CFLAGS) -c $< -o $@
+
 # Compile to binary file
-$(BINDIR)/$(PRGNAME): $(OBJS) dirs
+$(BINDIR)/$(PRGNAME): $(OBJS)
 	@echo "Creating binary file"
 	$(CC) $(CFLAGS) $(OBJS) -o $(BINDIR)/$(PRGNAME)
 
-# Compile to object files
-$(OBJDIR)/%.o: $(SRCDIR)/%.c dirs
-	@echo "Creating object file"
-	$(CC) $(CFLAGS) -c $< -o $@
-
 # Run binary file
+.PHONY: run
 run: $(BINDIR)/$(PRGNAME)
 	@echo "Executing $(PRGNAME)"
 	./$(BINDIR)/$(PRGNAME)
 
+.PHONY: time
+time: $(BINDIR)/$(PRGNAME)
+	@echo "Timing $(PRGNAME)"
+	time $(BINDIR)/$(PRGNAME)
+
 # Create directories if they don't exist
 .PHONY: dirs
 dirs:
-#	@echo "Creating directories"
+	@echo "Creating directories"
 	@for d in $(DIRS) ; do \
 		mkdir -p $$d ; \
 	done
 
 # Clean workspace
 .PHONY: clean
-clean: dirs
+clean:
 	@echo "Cleaning workspace"
-	$(RM) -r $(BINDIR)/* $(OBJDIR)/*
+	$(RM) -r $(BINDIR) $(OBJDIR)
 
 # Show variables for debugging
 .PHONY: show
