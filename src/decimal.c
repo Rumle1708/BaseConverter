@@ -33,7 +33,7 @@ void decToBin(const char *str){
     int64_t bytes = 1;
     int64_t shift = 1; // Needed to specify 64 bit
 
-    printf("Bool: %ld <= %ld = %d\n", value, -(max), (value <= -(max + 1)));
+    printf("Bool: %lld <= %lld = %d\n", value, -(max), (value <= -(max + 1)));
 
     while ((value >= max || value <= -(max + 1)) && bytes < 8)
     {
@@ -43,7 +43,7 @@ void decToBin(const char *str){
 
     for (int i = 8*bytes - 1; i >= 0; i--)
     {
-        printf("%ld", getBit(value, i)); // Maybe optimize with buffer
+        printf("%lld", getBit(value, i)); // Maybe optimize with buffer
         if (i%8 == 0)
         {
             printf(" ");
@@ -70,15 +70,15 @@ void decToHex(const char *str){
 
     // Format string
     if(bytes == 1){
-        printf("%02lx\n", value);
+        printf("%02llx\n", value);
     } else if (bytes == 2)
     {
-        printf("%04lx\n", value);
+        printf("%04llx\n", value);
     } else if (bytes == 4)
     {
-        printf("%08lx\n", value);
+        printf("%08llx\n", value);
     } else
     {
-        printf("%016lx\n", value);
+        printf("%016llx\n", value);
     }
 }
