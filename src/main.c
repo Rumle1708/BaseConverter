@@ -1,7 +1,29 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-typedef struct number{
+const uint8_t HEX_LUT[16] =
+{
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+};
+
+typedef struct number
+{
     uint64_t bits; // Bits of the input number
     uint8_t isSigned;
     uint8_t numOfBytes; // Bytes required to represent number
@@ -123,14 +145,16 @@ void decStringToNumber(number *n, const char *str)
     n->isFloat = 0;
 }
 
-void printNumber(number *n){
+void printNumber(number *n)
+{
     printf("Absolute decimal value is %llu\n", n->bits);
     printf("The sign of value is %u\n", n->isSigned);
     printf("The number of bytes required are %u\n", n->numOfBytes);
     printf("Is number a float %u\n", n->isFloat);
 }
 
-void printNumberBinary(number *n){
+void printNumberBinary(number *n)
+{
     // Prints a number as a binary string
     uint64_t bitsToPrint;
 
@@ -142,25 +166,71 @@ void printNumberBinary(number *n){
     {
         bitsToPrint = n->bits;
     }
-    for (uint8_t i = n->numOfBytes*8; i > 0; i--)
+    for (uint8_t i = n->numOfBytes * 8; i > 0; i--)
     {
-        if (i%8==7 && i != n->numOfBytes*8 - 1)
+        if (i % 8 == 7 && i != n->numOfBytes * 8 - 1)
         {
             printf(" ");
         }
         
-        printf("%llu", 1LLU&(bitsToPrint>>(i-1)));
+        printf("%llu", 1LLU & (bitsToPrint >> (i - 1)));
     }
-    
+    printf("\n");
+}
+
+void printNumberDecimal(number *n)
+{
+    // Prints number in decimal representation
+    if (n->isSigned)
+    {
+        printf("-");
+    }
+    printf("%llu\n", n->bits);
+}
+
+void printNumberHex(number *n)
+{
+    // Prints number as hexadecimal
+    uint64_t bitsToPrint;
+    if (n->isSigned)
+    {
+        bitsToPrint = ~n->bits + 1;
+    }
+    else
+    {
+        bitsToPrint = n->bits;
+    }
+
+    uint8_t i = n->numOfBytes * 2;
+
+    for (; i > 0; i--)
+    {
+        //printf("kugle\n");
+        printf("%c", HEX_LUT[0xFLLU & (bitsToPrint >> (i - 1)*4)]);
+
+    }
+
+    //printf("%c", HEX_LUT[]);
     printf("\n");
 }
 
 int main(int argc, const char *argv[])
 {
+    if (argc < 2)
+    {
+        // TODO print help
+        exit(1);
+    }
+
     number n;
     decStringToNumber(&n, argv[1]);
-    printNumber(&n);
+
+    printf("Bin: ");
     printNumberBinary(&n);
+    printf("Dec: ");
+    printNumberDecimal(&n);
+    printf("Hex: ");
+    printNumberHex(&n);
 
 
     printf("--------END OF PROGRAM--------\n");
