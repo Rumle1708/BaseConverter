@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 const uint8_t HEX_LUT[16] =
 {
@@ -207,23 +207,44 @@ void printNumberHex(number *n)
     {
         //printf("kugle\n");
         printf("%c", HEX_LUT[0xFLLU & (bitsToPrint >> (i - 1)*4)]);
-
     }
-
-    //printf("%c", HEX_LUT[]);
     printf("\n");
+}
+
+void printInfo()
+{
+    printf("base 1.0\n");
+    printf("2022 Mads Rumle Nordstroem.\n");
+}
+
+void printHelp()
+{
+    // Function to help user
+    printf("usage: base [-options] [number]\n");
+}
+
+void printOptions()
+{
+    printf("-v              Print version info\n");
+    printf("-h              Print this help screen\n");
 }
 
 int main(int argc, const char *argv[])
 {
+    printf("\033[1;31m");
+    printf("--------BASE CONVERTER--------\n");
+    printf("\033[0;33m");
     if (argc < 2)
     {
         // TODO print help
-        exit(1);
+        printHelp();
+        //exit(1);
     }
 
     number n;
     decStringToNumber(&n, argv[1]);
+
+    printf("Converting number %s\n", argv[1]);
 
     printf("Bin: ");
     printNumberBinary(&n);
@@ -232,7 +253,9 @@ int main(int argc, const char *argv[])
     printf("Hex: ");
     printNumberHex(&n);
 
-
+    
+    printf("\033[1;31m");
     printf("--------END OF PROGRAM--------\n");
+    printf("\033[0m");
     return 0;
 }

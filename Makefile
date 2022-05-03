@@ -4,7 +4,7 @@
 SHELL := /bin/bash
 
 # Compiler stuff
-CC = gcc
+CC = clang
 CFLAGS = -g -Wall
 
 # Directories
