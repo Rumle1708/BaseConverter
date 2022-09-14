@@ -147,7 +147,7 @@ void decStringToNumber(number *n, const char *str)
 
 void printNumber(number *n)
 {
-    printf("Absolute decimal value is %llu\n", n->bits);
+    printf("Absolute decimal value is %lu\n", n->bits);
     printf("The sign of value is %u\n", n->isSigned);
     printf("The number of bytes required are %u\n", n->numOfBytes);
     printf("Is number a float %u\n", n->isFloat);
@@ -185,7 +185,7 @@ void printNumberDecimal(number *n)
     {
         printf("-");
     }
-    printf("%llu\n", n->bits);
+    printf("%lu\n", n->bits);
 }
 
 void printNumberHex(number *n)
