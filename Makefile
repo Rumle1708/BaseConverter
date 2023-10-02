@@ -11,13 +11,15 @@ CFLAGS = -g -Wall
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
+ASMDIR = asm
 
 # Add directories for project here:
-DIRS = $(SRCDIR) $(OBJDIR) $(BINDIR)
+DIRS = $(SRCDIR) $(OBJDIR) $(BINDIR) $(ASMDIR)
 
 # List of source og object files
 SRCS=$(wildcard $(SRCDIR)/*.c)
 OBJS=$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+ASMS=$(patsubst $(SRCDIR)/%.c, $(ASMDIR)/%.s, $(SRCS))
 
 # Name of program
 PRGNAME = base
@@ -34,6 +36,12 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c dirs
 $(BINDIR)/$(PRGNAME): $(OBJS)
 	@echo "Creating binary file"
 	$(CC) $(CFLAGS) $(OBJS) -o $(BINDIR)/$(PRGNAME)
+
+$(ASMDIR)/%.s: $(SRCDIR)/%.c dirs
+	@echo "Creating assembly files"
+	$(CC) $(CFLAGS) -Os -S $< -o $@
+
+asm: $(ASMS)
 
 # Run binary file
 .PHONY: run
@@ -68,7 +76,7 @@ dirs:
 .PHONY: clean
 clean:
 	@echo "Cleaning workspace"
-	$(RM) -r $(BINDIR) $(OBJDIR)
+	$(RM) -r $(BINDIR) $(OBJDIR) $(ASMDIR)
 
 # Show variables for debugging
 .PHONY: show
