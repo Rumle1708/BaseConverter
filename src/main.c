@@ -119,7 +119,6 @@ void removeBaseIndicator(char* str)
         i++;
     }
     str[i] = *charPtr;
-    printf("%s\n", str);
 }
 
 // 2 base indicator bits + 64 bits + string termination

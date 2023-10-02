@@ -12,6 +12,7 @@ SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
 ASMDIR = asm
+INSTALLDIR ?= /usr/local/bin
 
 # Add directories for project here:
 DIRS = $(SRCDIR) $(OBJDIR) $(BINDIR) $(ASMDIR)
@@ -41,28 +42,13 @@ $(ASMDIR)/%.s: $(SRCDIR)/%.c dirs
 	@echo "Creating assembly files"
 	$(CC) $(CFLAGS) -Os -S $< -o $@
 
+.PHONY: asm
 asm: $(ASMS)
 
-# Run binary file
-.PHONY: run
-run: $(BINDIR)/$(PRGNAME)
-	@echo "Executing $(PRGNAME)"
-	./$(BINDIR)/$(PRGNAME) 5690
-	./$(BINDIR)/$(PRGNAME) -5690
-	./$(BINDIR)/$(PRGNAME) 0
-	./$(BINDIR)/$(PRGNAME) 1
-	./$(BINDIR)/$(PRGNAME) -1
-	./$(BINDIR)/$(PRGNAME) 4
-	./$(BINDIR)/$(PRGNAME) -4
-	./$(BINDIR)/$(PRGNAME) 99932094382039804
-	./$(BINDIR)/$(PRGNAME) -0992929929291992
-	./$(BINDIR)/$(PRGNAME) -00000219002
-	./$(BINDIR)/$(PRGNAME) 00000011
-
-.PHONY: time
-time: $(BINDIR)/$(PRGNAME)
-	@echo "Timing $(PRGNAME)"
-	time $(BINDIR)/$(PRGNAME)
+.PHONY: install
+install: $(BINDIR)/$(PRGNAME)
+	mkdir -p $(INSTALLDIR)
+	cp $(BINDIR)/$(PRGNAME) $(INSTALLDIR)/$(PRGNAME)
 
 # Create directories if they don't exist
 .PHONY: dirs
