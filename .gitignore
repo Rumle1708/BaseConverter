@@ -58,3 +58,5 @@ dkms.conf
 
 # Other
 .vscode
+.cache
+compile_commands.json
