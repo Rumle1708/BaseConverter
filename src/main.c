@@ -57,7 +57,7 @@ char* itostr(char *dest, size_t size, int a, int base) {
 
   size_t size_used = &buffer[sizeof(buffer)] - p;
   if (size_used > size) {
-    fprintf(stderr, "Scant buffer %zu > %zu", size_used , size);
+    fprintf(stderr, "Scan buffer %zu > %zu", size_used , size);
     return NULL;
   }
   return memcpy(dest, p, size_used);
@@ -88,6 +88,7 @@ int getbaseFromString(char* str, int fallback)
     while (*charPtr != 0) {
         if (getBaseFromChar(*charPtr)) {
             base = getBaseFromChar(*charPtr);
+            break;
         }
         charPtr++;
     }
@@ -103,6 +104,7 @@ void removeBaseIndicator(char* str)
     while (*charPtr != 0) {
         if (getBaseFromChar(*charPtr)) {
             baseIndicatorPtr = charPtr;
+            break;
         }
         charPtr++;
     }
@@ -137,12 +139,16 @@ int main(int argc, const char *argv[])
     char printBuffer[BUFFER_SIZE];
 
     strncpy(strBuffer, argv[1], BUFFER_SIZE);
+    printf("Input: %s\n", strBuffer);
 
     int base = getbaseFromString(strBuffer, 10);
+    printf("Base: %d\n", base);
 
     removeBaseIndicator(strBuffer);
+    printf("Removed base: %s\n", strBuffer);
 
     long long number = strtoll(strBuffer, NULL, base);
+    printf("Number as lld: %lld\n", number);
 
     itostr(printBuffer, BUFFER_SIZE, number, 2);
     printf("0b%s\n", printBuffer);
