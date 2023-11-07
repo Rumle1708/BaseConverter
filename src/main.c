@@ -139,16 +139,12 @@ int main(int argc, const char *argv[])
     char printBuffer[BUFFER_SIZE];
 
     strncpy(strBuffer, argv[1], BUFFER_SIZE);
-    printf("Input: %s\n", strBuffer);
 
     int base = getbaseFromString(strBuffer, 10);
-    printf("Base: %d\n", base);
 
     removeBaseIndicator(strBuffer);
-    printf("Removed base: %s\n", strBuffer);
 
     long long number = strtoll(strBuffer, NULL, base);
-    printf("Number as lld: %lld\n", number);
 
     itostr(printBuffer, BUFFER_SIZE, number, 2);
     printf("0b%s\n", printBuffer);
